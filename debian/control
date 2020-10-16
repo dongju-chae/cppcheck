@@ -1,0 +1,14 @@
+Source: cppcheck
+Section: utils
+Priority: optional
+Maintainer: Dongju Chae <dongju.chae@samsung.com>
+Build-Depends: debhelper (>=9), cmake, python, libpcre3-dev
+Standards-Version: 3.8.2
+Homepage: http://cppcheck.sourceforge.net
+
+Package: cppcheck
+architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Cppcheck
+ Cppcheck is a static analysis tool for C/C++ code. It provides unique code analysis to detect bugs and focuses on detecting undefined behaviour and dangerous coding constructs. The goal is to have very few false positives. Cppcheck is designed to be able to analyze your C/C++ code even if it has non-standard syntax (common in embedded projects).

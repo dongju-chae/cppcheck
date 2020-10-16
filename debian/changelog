@@ -1,0 +1,6 @@
+cppcheck (2.2.0.0) unstable xenial bionic; urgency=medium
+
+  * 2.2.0 ppa porting
+
+ -- Dongju Chae <dongju.chae@samsung.com>  Fri, 16 Oct 2020 12:05:00 +0900
+
