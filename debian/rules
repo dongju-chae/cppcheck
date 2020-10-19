@@ -1,0 +1,44 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#export DH_VERBOSE = 1
+
+
+# see FEATURE AREAS in dpkg-buildflags(1)
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+# see ENVIRONMENT in dpkg-buildflags(1)
+# package maintainers to append CFLAGS
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+# package maintainers to append LDFLAGS
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+ROOT_DIR:=$(shell pwd)
+
+export LC_ALL=C.UTF-8
+export N_PROCS=`lscpu | grep "^CPU(s):" | sed -e "s/CPU(s):\s*//g"`
+
+%:
+	dh $@ --parallel
+
+override_dh_auto_clean:
+	rm -rf build
+	rm -rf debian/tmp
+
+override_dh_auto_configure:
+	mkdir -p build
+	cd build && cmake .. \
+		-DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr \
+		-DHAVE_RULES=ON -DUSE_MATCHCOMPILER=ON
+
+override_dh_auto_build:
+	cd build && make -j${N_PROCS}
+
+override_dh_auto_test:
+	cd build && make -j${N_PROCS} test
+
+override_dh_auto_install:
+	cd build && DESTDIR=${ROOT_DIR}/debian/tmp make -j${N_PROCS} install
+
+override_dh_install:
+	dh_install --sourcedir=${ROOT_DIR}/debian/tmp --list-missing
